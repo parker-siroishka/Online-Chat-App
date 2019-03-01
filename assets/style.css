@@ -1,0 +1,130 @@
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    font: 13px Helvetica, Arial;
+    background-color:teal !important;
+}
+
+#chat-title {
+    float: left;
+    width: 75%;
+    font-family: 'Oxygen', sans-serif;
+    color: rgb(201, 198, 198);
+}
+
+#users-title {
+    font-family: 'Oxygen', sans-serif;
+    color: rgb(201, 198, 198);
+}
+
+.message-div {
+    display: table;
+    float: left;
+    height: 93%;
+    width: 75%;
+    margin-right: 10px;
+    background-color: teal;
+    position: fixed;
+}
+
+.users-div {
+    width: 25%;
+    height: 800px;
+    background-color: rgb(26, 104, 107);
+    margin-left: 75%;
+    position: fixed;
+}
+
+form {
+    background: rgb(45, 51, 53); 
+    padding: 3px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+form input {
+    border: 0;
+    padding: 10px;
+    width: 90%;
+    margin-right: 0.5%;
+    border-radius: 5px;
+    margin-left: 0.2%;
+    font-size: 19px;
+}
+
+.send-btn {
+    width: 9%;
+    background: rgb(82, 142, 161);
+    border: none;
+    padding: 12px;
+    font-size: 100%;  
+    color: white;
+    border-radius: 5px;
+}
+
+.send-btn:hover {
+    background:rgb(81, 150, 96);
+}
+
+.chat-title-container {
+    position: absolute;
+    height: 10%;
+    width: 19%;
+    background-color: rgb(190, 190, 190, 0.5);
+    z-index: 1;
+    border-radius: 8px;
+}
+
+.chat-title {
+    position: absolute;
+    float: top;
+    z-index: 2;
+    font-family: 'Oxygen', sans-serif;
+    font-size: 300%;
+    text-align: center;
+}
+
+#messages {
+    display: table-cell;
+    vertical-align: bottom;
+    padding: 5px;
+    overflow: auto;
+
+}
+
+#online-users {
+    list-style-type: none;
+}
+
+#messages span {
+    padding: 5px 10px;
+    color: white;
+    display: block;
+    margin-bottom: 3px;
+}
+
+#online-users li {
+    text-decoration: none;
+    padding: 5px 10px;
+    color: white;
+    border-bottom: 1px solid rgba(212, 255, 249, 0.933);
+}
+
+#messages span:nth-child(odd) {
+    background: rgba(79, 170, 158, 0.933);
+}
+
+@media only screen and (max-device-width: 480px) {
+    .send-btn {
+        font-size: 0%;
+    }
+}

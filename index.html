@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Online Chat App</title>
+    <link href="https://fonts.googleapis.com/css?family=Oxygen" rel="stylesheet">
+    <link rel="stylesheet"  type="text/css" href="assets/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="assets/script.js"></script>
+</head>
+
+    <body>
+        <div class="headers">
+            <h2 id="chat-title">Chat</h2>
+            <h2 id="users-title">Users Online:</h2>
+        </div>
+        <div class="message-div">
+            <div id="messages"></div>
+        </div>
+        <div class="users-div">
+            <!-- <div class="active-users-title">Active Users</div> -->
+            <ul id="online-users"></div>
+        </div>
+        <form action="">
+            <input id="m" autocomplete="off"><button class="send-btn">Send</button>
+        </form>
+        
+
+    </body>
+</html>
