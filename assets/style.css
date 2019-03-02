@@ -16,21 +16,29 @@ body {
 #chat-title {
     float: left;
     width: 75%;
-    font-family: 'Oxygen', sans-serif;
-    color: rgb(201, 198, 198);
+    font-family: 'Open Sans';
+    color: white;
+    border-bottom: 2px solid white;
 }
 
 #users-title {
-    font-family: 'Oxygen', sans-serif;
-    color: rgb(201, 198, 198);
+    font-family: 'Open Sans';
+    color: white;
+    border-bottom: 2px solid white;
+    border-left: 2px solid white;
+    margin-bottom: 0;
+    background-color: rgb(26, 104, 107);
+    margin-left: 75%;
+    padding-left: 1%;
 }
 
 .message-div {
     display: table;
     float: left;
-    height: 93%;
+    height: 80%;
     width: 75%;
     margin-right: 10px;
+    margin-bottom: 5%;
     background-color: teal;
     position: fixed;
 }
@@ -98,6 +106,7 @@ form input {
     vertical-align: bottom;
     padding: 5px;
     overflow: auto;
+    margin-bottom: 15%;
 
 }
 
@@ -109,7 +118,6 @@ form input {
     padding: 5px 10px;
     color: white;
     display: block;
-    margin-bottom: 3px;
 }
 
 #online-users li {
