@@ -3,29 +3,33 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
 }
 
 body {
-    height: 100%;
-    width: 100%;
     font: 13px Helvetica, Arial;
     background-color:teal !important;
 }
 
+#headers {
+    position: fixed;
+}
+
 #chat-title {
+    position: relative;
     float: left;
     width: 75%;
     font-family: 'Open Sans';
     color: white;
-    border-bottom: 2px solid white;
+    border-bottom: 2px solid rgb(71, 187, 187);
 }
 
 #users-title {
+    position: relative;
     font-family: 'Open Sans';
     color: white;
-    border-bottom: 2px solid white;
-    border-left: 2px solid white;
+    border-bottom: 2px solid rgb(71, 187, 187);
+    /* border-left: 2px solid rgb(71, 187, 187); */
     margin-bottom: 0;
     background-color: rgb(26, 104, 107);
     margin-left: 75%;
@@ -41,6 +45,7 @@ body {
     margin-bottom: 5%;
     background-color: teal;
     position: fixed;
+    vertical-align: bottom;
 }
 
 .users-div {
@@ -102,11 +107,13 @@ form input {
 }
 
 #messages {
-    display: table-cell;
+    height: 87%;
+    width: 75%;
     vertical-align: bottom;
     padding: 5px;
     overflow: auto;
     margin-bottom: 15%;
+    position: fixed;
 
 }
 
@@ -114,21 +121,25 @@ form input {
     list-style-type: none;
 }
 
-#messages span {
+.msg {
+    bottom: 0;
     padding: 5px 10px;
     color: white;
     display: block;
+    border-radius: 10px;
+    background: rgb(26, 104, 107);
+    margin-top: 1%;
 }
 
 #online-users li {
     text-decoration: none;
     padding: 5px 10px;
     color: white;
-    border-bottom: 1px solid rgba(212, 255, 249, 0.933);
+    border-bottom: 1px solid rgb(49, 131, 131);
 }
 
-#messages span:nth-child(odd) {
-    background: rgba(79, 170, 158, 0.933);
+#messages div:nth-child(odd) {
+    background: rgba(74, 160, 148, 0.933);
 }
 
 @media only screen and (max-device-width: 480px) {

@@ -56,21 +56,43 @@ io.on('connection', function(socket){
         
         if(msg.indexOf(nickCmd)===0){
             let prevName = user.name;
-            user.name = msg.substring(6);
-            let index = currentUsers.findIndex(x => x.name === prevName)
-            currentUsers[index].name = user.name;
-            io.emit('updateUsers', currentUsers);
-            socket.emit('nameChanged', prevName, user);
+            let alreadyOnline = currentUsers.findIndex(x => x.name === msg.substring(6));
+            if(alreadyOnline === -1){
+                user.name = msg.substring(6);
+                let index = currentUsers.findIndex(x => x.name === prevName)
+                currentUsers[index].name = user.name;
+                io.emit('updateUsers', currentUsers);
+                socket.emit('nameChanged', prevName, user);
+            }else {
+                console.log("User already exists");
+                socket.emit('nameError', msg.substring(6));
+            }
+            
+            
+        }else if(msg.indexOf(rgbCmd)===0){
+            let colorObject = {}
+            let colorCommand = msg.substring(11).trim();
+            var re = /[0-9A-Fa-f]{6}/g;
+            if (re.test(colorCommand)){
+                colorObject.r = colorCommand.substring(0,2);
+                colorObject.g = colorCommand.substring(2,4);
+                colorObject.b = colorCommand.substring(4,6);
+                console.log(colorObject);
+                io.emit('colorChanged', colorObject, user);
+            }else {
+                socket.emit('colorError', colorCommand);
+            }
+        }else{
+
+            let d = new Date();
+            let hours = d.getHours();
+            let minutes = d.getMinutes();
+            let seconds = d.getSeconds();
+            let date = (hours+':'+minutes+':'+seconds);
+
+            socket.broadcast.emit('chat message', msg,user,date );
+            socket.emit('chat message - me', msg, user, date);
         }
-
-        let d = new Date();
-        let hours = d.getHours();
-        let minutes = d.getMinutes();
-        let seconds = d.getSeconds();
-        let date = (hours+':'+minutes+':'+seconds);
-
-        socket.broadcast.emit('chat message', msg,user,date);
-        socket.emit('chat message - me', msg, user, date);
     });
 
     function randNum(num) {
