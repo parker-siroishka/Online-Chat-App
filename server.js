@@ -22,19 +22,34 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
 
+    let cookies = {};
     let data = {};
+    let cookieData = socket.handshake.headers['cookie'];
+    if(cookieData !== undefined){
+        cookies = cookie.parse(cookieData);
+    }
+    console.log(cookies);
+    if(cookies.name === undefined){
+            socket.color = "ffffff";
+            data.name = 'user'+ randNum(10000);
+            if(currentUsers.indexOf(data.name) === -1) {
+                socket.name = data.name;
+                currentUsers.push(data);
+            } else {
+                data.name = 'user'+ randNum(10000);
+                socket.name = data.name;
+                currentUsers.push(data);
+            }
+    } else {
+        socket.name = cookies.name;
+        socket.color = cookies.color;
+    }
+
+    
     let nickCmd = "/nick ";
     let rgbCmd = "/nickcolor ";
-    data.name = 'user'+ randNum(10000);
+
     socket.color = "ffffff";
-    if(currentUsers.indexOf(data.name) === -1) {
-        socket.name = data.name;
-        currentUsers.push(data);
-    } else {
-        data.name = 'user'+ randNum(10000);
-        socket.name = data.name;
-        currentUsers.push(data);
-    }
     
     socket.emit('pullChatHistory', chatHistory);
 
@@ -61,8 +76,7 @@ io.on('connection', function(socket){
     });
 
     socket.on('chat message', function(msg, user){
-        
-        if(msg.indexOf(nickCmd)===0){
+        if(msg.indexOf(nickCmd)===0 && (msg.substring(6) !== '')){
             let prevName = user.name;
             let alreadyOnline = currentUsers.findIndex(x => x.name === msg.substring(6));
             if(alreadyOnline === -1){
@@ -93,11 +107,18 @@ io.on('connection', function(socket){
             let d = new Date();
             let hours = d.getHours();
             let minutes = d.getMinutes();
+            if(minutes < 10){
+                minutes = '0'+minutes;
+            }
+
             let seconds = d.getSeconds();
+            if(seconds < 10){
+                seconds = '0'+seconds;
+            }
             let date = (hours+':'+minutes+':'+seconds);
 
             if(chatHistory.length < 200){
-                chatHistory.push('<div class="msg">'+'<p style="color: #'+user.color+';display: inline;"> '+date+' - '+user.name+': '+msg+'</p>'+'</div>')
+                chatHistory.push('<div class="msg">'+date+' - '+'<p style="color: #'+user.color+';display: inline;"> '+user.name+'</p>'+': '+msg+'</div>')
             }else {
                 while(chatHistory.length >= 200){
                     chatHistory.splice(1,1);

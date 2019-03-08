@@ -3,7 +3,6 @@ $(function(){
     let socket = io();  
 
     var user = {};
-    var chat = [];
 
     socket.on('usernameCreated', function(data){
         console.log("usernameCreated");  
@@ -24,14 +23,14 @@ $(function(){
         console.log("chat message");  
 
         if(msg != ""){
-            $('#messages').append('<div class="msg">'+'<p style="color: #'+user.color+';display: inline;"> '+date+' - '+user.name+': '+msg+'</p>'+'</div>');
+            $('#messages').append('<div class="msg">'+date+' - '+'<p style="color: #'+user.color+';display: inline;">'+user.name+'</p>'+': '+msg+'</div>');
         };
     })
 
     socket.on('chat message - me', function(msg,user,date){
         console.log("chat message - me");  
         if(msg != ""){
-            $('#messages').append('<div class="msg">'+'<p style="color: #'+user.color+';display: inline;"> '+date+' - '+user.name+': '+'<strong>'+msg+'</strong>'+'</p>'+'</div>');
+            $('#messages').append('<div class="msg">'+'<strong>'+date+' - '+'<p style="color: #'+user.color+';display: inline;">'+user.name+'</p>'+': '+msg+'</strong>'+'</div>');
             
         };
     })

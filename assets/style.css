@@ -6,13 +6,19 @@
     /* box-sizing: border-box; */
 }
 
+/* div {
+    display: block;
+} */
+
 body {
     font: 13px Helvetica, Arial;
     background-color:teal !important;
 }
 
-#headers {
+.headers {
     position: fixed;
+    z-index: 2;
+    width: 100%;
 }
 
 #chat-title {
@@ -22,6 +28,7 @@ body {
     font-family: 'Open Sans';
     color: white;
     border-bottom: 2px solid rgb(71, 187, 187);
+    background: teal;
 }
 
 #users-title {
@@ -34,6 +41,7 @@ body {
     background-color: rgb(26, 104, 107);
     margin-left: 75%;
     padding-left: 1%;
+    background: teal;
 }
 
 .message-div {
@@ -43,9 +51,9 @@ body {
     width: 75%;
     margin-right: 10px;
     margin-bottom: 5%;
+    margin-top: 5%;
     background-color: teal;
-    position: fixed;
-    vertical-align: bottom;
+    position: absolute;
 }
 
 .users-div {
@@ -53,6 +61,7 @@ body {
     height: 800px;
     background-color: rgb(26, 104, 107);
     margin-left: 75%;
+    margin-top: 2.5%;
     position: fixed;
 }
 
@@ -89,7 +98,7 @@ form input {
 }
 
 .chat-title-container {
-    position: absolute;
+    position: fixed;
     height: 10%;
     width: 19%;
     background-color: rgb(190, 190, 190, 0.5);
@@ -98,7 +107,7 @@ form input {
 }
 
 .chat-title {
-    position: absolute;
+    position: fixed;
     float: top;
     z-index: 2;
     font-family: 'Oxygen', sans-serif;
@@ -109,11 +118,12 @@ form input {
 #messages {
     height: 87%;
     width: 75%;
-    vertical-align: bottom;
+    vertical-align: bottom; 
     padding: 5px;
     overflow: auto;
     margin-bottom: 15%;
-    position: fixed;
+    /* position: fixed; */
+    display: table-cell;
 
 }
 
