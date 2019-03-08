@@ -35,6 +35,7 @@ io.on('connection', function(socket){
         socket.name = data.name;
         currentUsers.push(data);
     }
+    
     socket.emit('pullChatHistory', chatHistory);
 
     socket.emit('user joined - me', data);
@@ -94,9 +95,17 @@ io.on('connection', function(socket){
             let minutes = d.getMinutes();
             let seconds = d.getSeconds();
             let date = (hours+':'+minutes+':'+seconds);
-            chatHistory.push('<div class="msg">'+'<p style="color: #'+user.color+';display: inline;"> '+date+' - '+user.name+': '+msg+'</p>'+'</div>')
+
+            if(chatHistory.length < 200){
+                chatHistory.push('<div class="msg">'+'<p style="color: #'+user.color+';display: inline;"> '+date+' - '+user.name+': '+msg+'</p>'+'</div>')
+            }else {
+                while(chatHistory.length >= 200){
+                    chatHistory.splice(1,1);
+                }
+            }    
             socket.broadcast.emit('chat message', msg,user,date );
             socket.emit('chat message - me', msg, user, date);
+            console.log(chatHistory.length);
         }
     });
 
