@@ -22,6 +22,7 @@ io.on('connection', function(socket){
     let nickCmd = "/nick ";
     let rgbCmd = "/nickcolor ";
     data.name = 'user'+ randNum(10000);
+    socket.color = "ffffff";
     if(currentUsers.indexOf(data.name) === -1) {
         socket.name = data.name;
         currentUsers.push(data);
@@ -60,29 +61,25 @@ io.on('connection', function(socket){
             if(alreadyOnline === -1){
                 user.name = msg.substring(6);
                 let index = currentUsers.findIndex(x => x.name === prevName)
+                console.log(user.name);
                 currentUsers[index].name = user.name;
                 io.emit('updateUsers', currentUsers);
                 socket.emit('nameChanged', prevName, user);
             }else {
-                console.log("User already exists");
                 socket.emit('nameError', msg.substring(6));
             }
             
             
         }else if(msg.indexOf(rgbCmd)===0){
-            let colorObject = {}
             let colorCommand = msg.substring(11).trim();
             var re = /[0-9A-Fa-f]{6}/g;
             if (re.test(colorCommand)){
-                colorObject.r = colorCommand.substring(0,2);
-                colorObject.g = colorCommand.substring(2,4);
-                colorObject.b = colorCommand.substring(4,6);
-                console.log(colorObject);
-                io.emit('colorChanged', colorObject, user);
+                user.color = colorCommand;
+                socket.emit('colorChanged', user);
             }else {
                 socket.emit('colorError', colorCommand);
             }
-        }else{
+        }else {
 
             let d = new Date();
             let hours = d.getHours();

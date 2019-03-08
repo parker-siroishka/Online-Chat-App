@@ -1,40 +1,36 @@
 $(function(){
 
     let socket = io();  
-    var clientUser = '';
 
-    var user = {
-        color : { r : "00", g : "00", b : "00" },
-        name : ""
-    };
+    var user = {};
 
     socket.on('usernameCreated', function(data){
-        console.log("data here", data);
+        console.log("usernameCreated");  
+
         user.name = data.name;
-        user.color.r = "00";
-        user.color.g = "00";
-        user.color.b = "FF"; 
+        user.color = "ffffff";
         $('#chat-title').append('<div>').text('You are '+user.name);
     });
 
     $('form').submit(function(e){
         e.preventDefault(); // prevents page from reloading
-        console.log(user.name);
+        console.log(user);
         socket.emit('chat message', $('#m').val(), user);
         $('#m').val('');
         return false;
     }); 
     socket.on('chat message', function(msg,user,date){
+        console.log("chat message");  
 
         if(msg != ""){
-            $('#messages').append('<div class="msg">'+date+'<p style="color: #'+user.r+user.g+user.b+';display: inline;"> '+user.name+': </p>'+msg+'</div>');
+            $('#messages').append('<div class="msg">'+'<p style="color: #'+user.color+';display: inline;"> '+date+' - '+user.name+': '+msg+'</p>'+'</div>');
         };
     })
 
     socket.on('chat message - me', function(msg,user,date){
-
+        console.log("chat message - me");  
         if(msg != ""){
-            $('#messages').append('<div class="msg">'+date+' - '+user.name+': '+'<strong>'+msg+'</strong>'+'</div>');
+            $('#messages').append('<div class="msg">'+'<p style="color: #'+user.color+';display: inline;"> '+date+' - '+user.name+': '+'<strong>'+msg+'</strong>'+'</p>'+'</div>');
             
         };
     })
@@ -44,6 +40,7 @@ $(function(){
     })
 
     socket.on('user joined - me', function(user){
+        console.log("user joined - me");  
         $('#messages').append($('<div class="msg">').text(user.name+' <me> joined'));
     })
 
@@ -54,16 +51,15 @@ $(function(){
     
 
     socket.on('nameChanged', function(prevName, newName){
-        $('#messages').append($('<div class="msg">').text(prevName+' has changed their name to '+newName.name));
         user.name = newName.name;
+        $('#messages').append($('<div class="msg">').text(prevName+' has changed their name to '+newName.name));
         $('#chat-title').append('<div class="msg">').text('You are '+user.name);
     })
 
-    socket.on('colorChanged', function(rgbValue, user){
-        $('#messages').append($('<div class="msg">').text(user.name+' has changed color to RRGGBB:'+rgbValue.r+rgbValue.g+rgbValue.b));
-        user.color.r = rgbValue.r;
-        user.color.g = rgbValue.g;
-        user.color.b = rgbValue.b;
+    socket.on('colorChanged', function(data){  
+        user.color = data.color;    
+        console.log("colorChanged " + user.color);  
+        $('#messages').append($('<div class="msg">').text(user.name+' has changed color to RRGGBB: '+user.color));
 
     })
 
