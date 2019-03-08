@@ -3,6 +3,7 @@ $(function(){
     let socket = io();  
 
     var user = {};
+    var chat = [];
 
     socket.on('usernameCreated', function(data){
         console.log("usernameCreated");  
@@ -49,6 +50,10 @@ $(function(){
         $('#online-users').eq(-1).remove();
     })
     
+    socket.on('nameChanged - other', function(prevName,newName){
+        console.log("Executed");
+        $('#messages').append($('<div class="msg">').text(prevName+' has changed their name to '+newName.name));
+    })
 
     socket.on('nameChanged', function(prevName, newName){
         user.name = newName.name;
@@ -82,6 +87,12 @@ $(function(){
             $('#online-users').append($('<li class="msg">').text(user.name));
         });
         }
+    })
+
+    socket.on('pullChatHistory', function(chatHistory){
+        chatHistory.forEach(msg => {
+            $('#messages').append(msg);
+        });
     })
 
     

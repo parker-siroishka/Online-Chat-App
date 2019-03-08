@@ -121,6 +121,16 @@ form input {
     list-style-type: none;
 }
 
+.msg-initial-chat {
+    bottom: 0;
+    padding: 5px 10px;
+    color: white;
+    display: block;
+    margin-top: 1%;
+    font-style: italic;
+    background: teal !important;
+}
+
 .msg {
     bottom: 0;
     padding: 5px 10px;

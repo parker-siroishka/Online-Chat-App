@@ -8,6 +8,10 @@ let cookie = require('cookie');
 
 
 let currentUsers = [];
+let initialChatMessage = `<div class="msg-initial-chat" >
+                                No Prevous Messages Logged...
+                          </div>`
+let chatHistory = [initialChatMessage];
 
 
 app.use('/assets', express.static('assets'));
@@ -31,6 +35,8 @@ io.on('connection', function(socket){
         socket.name = data.name;
         currentUsers.push(data);
     }
+    socket.emit('pullChatHistory', chatHistory);
+
     socket.emit('user joined - me', data);
     socket.broadcast.emit('user joined - other', data);
 
@@ -60,10 +66,12 @@ io.on('connection', function(socket){
             let alreadyOnline = currentUsers.findIndex(x => x.name === msg.substring(6));
             if(alreadyOnline === -1){
                 user.name = msg.substring(6);
+                socket.name = user.name;
                 let index = currentUsers.findIndex(x => x.name === prevName)
                 console.log(user.name);
                 currentUsers[index].name = user.name;
                 io.emit('updateUsers', currentUsers);
+                socket.broadcast.emit('nameChanged - other', prevName, user);
                 socket.emit('nameChanged', prevName, user);
             }else {
                 socket.emit('nameError', msg.substring(6));
@@ -86,7 +94,7 @@ io.on('connection', function(socket){
             let minutes = d.getMinutes();
             let seconds = d.getSeconds();
             let date = (hours+':'+minutes+':'+seconds);
-
+            chatHistory.push('<div class="msg">'+'<p style="color: #'+user.color+';display: inline;"> '+date+' - '+user.name+': '+msg+'</p>'+'</div>')
             socket.broadcast.emit('chat message', msg,user,date );
             socket.emit('chat message - me', msg, user, date);
         }
