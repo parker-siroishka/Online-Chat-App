@@ -3,6 +3,7 @@
 * {
     margin: 0;
     padding: 0;
+    outline: red;
     /* box-sizing: border-box; */
 }
 
@@ -162,8 +163,15 @@ form input {
     background: rgba(74, 160, 148, 0.933);
 }
 
-@media only screen and (max-device-width: 480px) {
-    .send-btn {
-        font-size: 0%;
+@media only screen and (max-width: 849px) {
+    .users-div {
+        margin-top: 11%;
+    }
+    
+}
+
+@media only screen and (max-height: 469px){
+    .message-div {
+        margin-top: 1%;
     }
 }

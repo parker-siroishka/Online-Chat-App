@@ -1,5 +1,4 @@
 $(function(){
-
     let socket = io();  
 
     var user = {};
@@ -24,14 +23,25 @@ $(function(){
 
         if(msg != ""){
             $('#messages').append('<div class="msg">'+date+' - '+'<p style="color: #'+user.color+';display: inline;">'+user.name+'</p>'+': '+msg+'</div>');
+            $('#messages').scrollTop($('#messages')[0].scrollHeight);
+            
+            $('html, body').animate({
+                scrollTop: $('#messages').offset().top + $('#messages')[0].scrollHeight
+            }, 500);
         };
+
+       
+        
+    
     })
 
     socket.on('chat message - me', function(msg,user,date){
         console.log("chat message - me");  
         if(msg != ""){
             $('#messages').append('<div class="msg">'+'<strong>'+date+' - '+'<p style="color: #'+user.color+';display: inline;">'+user.name+'</p>'+': '+msg+'</strong>'+'</div>');
-            
+            $('html, body').animate({
+                scrollTop: $('#messages').offset().top + $('#messages')[0].scrollHeight
+            }, 500);
         };
     })
     socket.on('user joined - other', function(user){
@@ -93,6 +103,7 @@ $(function(){
             $('#messages').append(msg);
         });
     })
+
 
     
 });
