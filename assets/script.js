@@ -4,10 +4,26 @@ $(function(){
     var user = {};
 
     socket.on('usernameCreated', function(data){
-        console.log("usernameCreated");  
+        if (document.cookie.split(';').filter((item) => item.trim().startsWith('name=')).length){
 
-        user.name = data.name;
-        user.color = "ffffff";
+            let cookieInfo = document.cookie.replace(/(?:(?:^|.*;\s*)name\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+            user.name = cookieInfo;
+            user.color = 'ffffff';
+            socket.emit('present cookie', cookieInfo);
+            $('#chat-title').append('<div>').text('You are '+cookieInfo);
+        }  else {
+            document.cookie = 'name='+data.name;
+            var now = new Date();
+            now.setMonth( now.getMonth() + 1 );
+            document.cookie = "expires=" + now.toUTCString() + ";"
+            socket.emit('no present cookie');
+            user.name = data.name;
+            user.color = "ffffff";
+        }
+
+        $('html, body').animate({
+            scrollTop: $('#messages').offset().top + $('#messages')[0].scrollHeight
+        }, 1);
         $('#chat-title').append('<div>').text('You are '+user.name);
     });
 
@@ -27,7 +43,7 @@ $(function(){
             
             $('html, body').animate({
                 scrollTop: $('#messages').offset().top + $('#messages')[0].scrollHeight
-            }, 500);
+            }, 1);
         };
 
        
@@ -41,7 +57,7 @@ $(function(){
             $('#messages').append('<div class="msg">'+'<strong>'+date+' - '+'<p style="color: #'+user.color+';display: inline;">'+user.name+'</p>'+': '+msg+'</strong>'+'</div>');
             $('html, body').animate({
                 scrollTop: $('#messages').offset().top + $('#messages')[0].scrollHeight
-            }, 500);
+            }, 1);
         };
     })
     socket.on('user joined - other', function(user){
@@ -66,6 +82,7 @@ $(function(){
 
     socket.on('nameChanged', function(prevName, newName){
         user.name = newName.name;
+        document.cookie = 'name='+newName.name;
         $('#messages').append($('<div class="msg">').text(prevName+' has changed their name to '+newName.name));
         $('#chat-title').append('<div class="msg">').text('You are '+user.name);
     })

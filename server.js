@@ -3,7 +3,7 @@ let path = require('path');
 let app = express();
 let http = require('http').Server(app);
 let io = require('socket.io')(http);
-let cookie = require('cookie');
+const cookie = require('cookie');
 
 
 
@@ -24,37 +24,49 @@ io.on('connection', function(socket){
 
     let cookies = {};
     let data = {};
-    let cookieData = socket.handshake.headers['cookie'];
-    if(cookieData !== undefined){
-        cookies = cookie.parse(cookieData);
-    }
-    console.log(cookies);
-    if(cookies.name === undefined){
-            socket.color = "ffffff";
-            data.name = 'user'+ randNum(10000);
-            if(currentUsers.indexOf(data.name) === -1) {
-                socket.name = data.name;
-                currentUsers.push(data);
-            } else {
-                data.name = 'user'+ randNum(10000);
-                socket.name = data.name;
-                currentUsers.push(data);
-            }
+
+
+    socket.color = "ffffff";
+    data.name = 'user'+ randNum(10000);
+    if(currentUsers.indexOf(data.name) === -1) {
+        socket.name = data.name;
+        //currentUsers.push(data);
     } else {
-        socket.name = cookies.name;
-        socket.color = cookies.color;
+        data.name = 'user'+ randNum(10000);
+        socket.name = data.name;
+        //currentUsers.push(data);
     }
+
+    socket.on('present cookie', function(userExisted){
+        console.log("present cookie" + userExisted);
+        data.name = userExisted;
+        currentUsers.push(data);
+        socket.name = data.name;
+        socket.broadcast.emit('user joined - other', data);
+        console.log(data);
+        socket.emit('user joined - me', data);
+        io.emit('updateUsers', currentUsers);
+    });
+
+    socket.on('no present cookie', function(){
+        console.log("No cookie");
+        currentUsers.push(data);
+        socket.name = data.name;
+        socket.broadcast.emit('user joined - other', data);
+        socket.emit('user joined - me', data);
+        io.emit('updateUsers', currentUsers);
+    });
+    
 
     
     let nickCmd = "/nick ";
     let rgbCmd = "/nickcolor ";
 
-    socket.color = "ffffff";
     
     socket.emit('pullChatHistory', chatHistory);
 
-    socket.emit('user joined - me', data);
-    socket.broadcast.emit('user joined - other', data);
+    // socket.emit('user joined - me', data);
+    // socket.broadcast.emit('user joined - other', data);
 
     socket.emit('usernameCreated', data);
     
