@@ -1,6 +1,5 @@
 $(function(){
     let socket = io();  
-
     var user = {};
 
     socket.on('usernameCreated', function(data){
@@ -29,13 +28,11 @@ $(function(){
 
     $('form').submit(function(e){
         e.preventDefault(); // prevents page from reloading
-        console.log(user);
         socket.emit('chat message', $('#m').val(), user);
         $('#m').val('');
         return false;
     }); 
     socket.on('chat message', function(msg,user,date){
-        console.log("chat message");  
 
         if(msg != ""){
             $('#messages').append('<div class="msg">'+date+' - '+'<p style="color: #'+user.color+';display: inline;">'+user.name+'</p>'+': '+msg+'</div>');
@@ -44,15 +41,10 @@ $(function(){
             $('html, body').animate({
                 scrollTop: $('#messages').offset().top + $('#messages')[0].scrollHeight
             }, 1);
-        };
-
-       
-        
-    
+        };       
     })
 
     socket.on('chat message - me', function(msg,user,date){
-        console.log("chat message - me");  
         if(msg != ""){
             $('#messages').append('<div class="msg">'+'<strong>'+date+' - '+'<p style="color: #'+user.color+';display: inline;">'+user.name+'</p>'+': '+msg+'</strong>'+'</div>');
             $('html, body').animate({
@@ -66,7 +58,6 @@ $(function(){
     })
 
     socket.on('user joined - me', function(user){
-        console.log("user joined - me");  
         $('#messages').append($('<div class="msg">').text(user.name+' <me> joined'));
     })
 
@@ -76,7 +67,6 @@ $(function(){
     })
     
     socket.on('nameChanged - other', function(prevName,newName){
-        console.log("Executed");
         $('#messages').append($('<div class="msg">').text(prevName+' has changed their name to '+newName.name));
     })
 
@@ -89,7 +79,6 @@ $(function(){
 
     socket.on('colorChanged', function(data){  
         user.color = data.color;    
-        console.log("colorChanged " + user.color);  
         $('#messages').append($('<div class="msg">').text(user.name+' has changed color to RRGGBB: '+user.color));
 
     })
@@ -120,7 +109,4 @@ $(function(){
             $('#messages').append(msg);
         });
     })
-
-
-    
 });

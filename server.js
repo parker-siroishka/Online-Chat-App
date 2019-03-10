@@ -22,7 +22,6 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
 
-    let cookies = {};
     let data = {};
 
 
@@ -30,26 +29,21 @@ io.on('connection', function(socket){
     data.name = 'user'+ randNum(10000);
     if(currentUsers.indexOf(data.name) === -1) {
         socket.name = data.name;
-        //currentUsers.push(data);
     } else {
         data.name = 'user'+ randNum(10000);
         socket.name = data.name;
-        //currentUsers.push(data);
     }
 
     socket.on('present cookie', function(userExisted){
-        console.log("present cookie" + userExisted);
         data.name = userExisted;
         currentUsers.push(data);
         socket.name = data.name;
         socket.broadcast.emit('user joined - other', data);
-        console.log(data);
         socket.emit('user joined - me', data);
         io.emit('updateUsers', currentUsers);
     });
 
     socket.on('no present cookie', function(){
-        console.log("No cookie");
         currentUsers.push(data);
         socket.name = data.name;
         socket.broadcast.emit('user joined - other', data);
@@ -57,32 +51,18 @@ io.on('connection', function(socket){
         io.emit('updateUsers', currentUsers);
     });
     
-
-    
     let nickCmd = "/nick ";
     let rgbCmd = "/nickcolor ";
-
     
     socket.emit('pullChatHistory', chatHistory);
 
-    // socket.emit('user joined - me', data);
-    // socket.broadcast.emit('user joined - other', data);
-
     socket.emit('usernameCreated', data);
-    
-
-    
 
     io.emit('updateUsers', currentUsers);       
-    
-    
-    
 
     socket.on('disconnect', function(){
-        console.log(socket.name);
-        console.log(currentUsers);
+
         let ind = currentUsers.findIndex(x => x.name === socket.name);
-        console.log(ind);
         currentUsers.splice(ind,1);
         io.emit('updateUsers', currentUsers);
     });
@@ -95,7 +75,6 @@ io.on('connection', function(socket){
                 user.name = msg.substring(6);
                 socket.name = user.name;
                 let index = currentUsers.findIndex(x => x.name === prevName)
-                console.log(user.name);
                 currentUsers[index].name = user.name;
                 io.emit('updateUsers', currentUsers);
                 socket.broadcast.emit('nameChanged - other', prevName, user);
@@ -138,7 +117,6 @@ io.on('connection', function(socket){
             }    
             socket.broadcast.emit('chat message', msg,user,date );
             socket.emit('chat message - me', msg, user, date);
-            console.log(chatHistory.length);
         }
     });
 
