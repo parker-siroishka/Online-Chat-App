@@ -6,6 +6,7 @@ $(function(){
         if (document.cookie.split(';').filter((item) => item.trim().startsWith('name=')).length){
 
             let cookieInfo = document.cookie.replace(/(?:(?:^|.*;\s*)name\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+            console.log(cookieInfo);
             user.name = cookieInfo;
             user.color = 'ffffff';
             socket.emit('present cookie', cookieInfo);
